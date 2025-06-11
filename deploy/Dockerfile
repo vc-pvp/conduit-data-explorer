@@ -1,5 +1,5 @@
 # BUILD STAGE
-FROM docker-hub.repo.viacom.com/node:16-alpine AS build-stage
+FROM docker-hub.repo.viacom.com/node:20-alpine AS build-stage
 LABEL stage=build-stage
 
 WORKDIR /tmp/server
@@ -11,7 +11,7 @@ COPY . ./
 RUN yarn && yarn build
 
 # PROD STAGE
-FROM docker-hub.repo.viacom.com/node:16-alpine AS prod-stage
+FROM docker-hub.repo.viacom.com/node:20-alpine AS prod-stage
 RUN apk update && apk upgrade --no-cache
 RUN apk add procps
 
