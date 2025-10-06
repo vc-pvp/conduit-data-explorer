@@ -1,0 +1,28 @@
+name: release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: runs-on: paramount-cloud-ubuntu-arm64-latest-medium
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GH Packages registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+      - name: Build NF Data image
+        run: |
+          docker buildx build --provenance=false --load -t ghcr.io/${{ github.repository_owner }}/conduit-nf-data:latest -f ./deploy/Dockerfile .
+
+      - name: Push NF Data to GH Packages
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/conduit-nf-data:latest
