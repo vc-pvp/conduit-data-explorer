@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: runs-on: paramount-cloud-ubuntu-arm64-latest-medium
+    runs-on: paramount-cloud-ubuntu-arm64-latest-medium
     permissions:
       packages: write
       contents: read
