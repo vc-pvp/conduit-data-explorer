@@ -1,5 +1,5 @@
 # BUILD STAGE
-FROM docker-hub.repo.viacom.com/node:20-alpine AS build-stage
+FROM node:20-alpine AS build-stage
 LABEL stage=build-stage
 
 WORKDIR /tmp/server
@@ -8,10 +8,12 @@ COPY src/client/package.json src/client/yarn.lock ./src/client/
 RUN yarn install --frozen-lockfile
 
 COPY . ./
+
+ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN yarn && yarn build
 
 # PROD STAGE
-FROM docker-hub.repo.viacom.com/node:20-alpine AS prod-stage
+FROM node:20-alpine AS prod-stage
 RUN apk update && apk upgrade --no-cache
 RUN apk add procps
 
